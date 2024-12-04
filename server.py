@@ -50,35 +50,7 @@ def handle_server_commands():
             # Handle the /help command
             elif command.startswith("/help"):
                 help()
-            
-            # Handle the /register command
-            elif command.startswith("/register"):
-                parts = command.split(" ")
-                if len(parts) < 3:
-                    print("Usage: /register <username> <password>".encode('utf-8'))
-                    continue
-                username, password = parts[1], parts[2]
-                if username in clients:
-                    print("Username already taken. Please try a different one.".encode('utf-8'))
-                else:
-                    # Attempt registration
-                    if register_user(username, password):
-                        print(f"User {username} is successfuly added")
-                        current_user = username
-                        
 
-                """
-                parts = command.split(" ")
-                if len(parts) < 3:
-                    print("[SERVER] Usage: /register <username> <password>")
-                else:
-                    username, password = parts[1], parts[2]
-                    if username in clients:
-                        print("[SERVER] Username already taken. Please try a different one.")
-                    else:
-                        if register_user(username, password, None):
-                            print(f"[SERVER] User {username} registered successfully.")
-            """
             # Handle the /kick command
             elif command.startswith("/kick"):
                 parts = command.split(" ", 1)
@@ -413,7 +385,7 @@ def handle_client(conn, addr):
                 /register <username> <password> - Register a new user.
                 /login <username> <password> - Login to your account.
                 /find_game - Join the game queue.
-                /game_with <username> - Challenge another player to a game.
+                /game_with <opponent_name> - Challenge another player to a game.
                 /accept_game - Accept a game challenge.
                 /my_score - View your ranking and stats.
                 /exit - Shut down the Server."""
@@ -425,7 +397,7 @@ def handle_client(conn, addr):
                 break
 
             else:
-                conn.send("Unknown command. Available commands: /register <username> <password>, /login <username> <password>, /find_game, /game_with <username>, /my_score, /exit".encode('utf-8'))
+                conn.send("Unknown command. Write /help to list all available commands".encode('utf-8'))
     except Exception as e:
         print(f"Error: {e}")
     finally:
